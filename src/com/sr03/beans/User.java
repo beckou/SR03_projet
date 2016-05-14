@@ -10,8 +10,8 @@ public class User {
 	private String    password;
 	private String 	  company;
 	private String    phone;
-    private Timestamp dateInscription;
-    private Boolean   state;
+    private java.sql.Timestamp  dateInscription;
+    private int   state;
 		
     
     public Long getId(){
@@ -23,6 +23,10 @@ public class User {
     
     public String getLastname(){
     	return lastname;
+    }
+    
+    public void setLastname(String name){
+    	lastname = name;
     }
 	public String getMail() {
 		return mail;
@@ -48,17 +52,17 @@ public class User {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public Boolean getState() {
+	public int getState() {
 		return state;
 	}
-	public void setState(Boolean state) {
+	public void setState(int state) {
 		this.state = state;
 	}
-	public Timestamp getDateInscription() {
+	public java.sql.Timestamp  getDateInscription() {
 		return dateInscription;
 	}
-	public void setDateInscription(Timestamp dateInscription) {
-		this.dateInscription = dateInscription;
+	public void setDateInscription(java.sql.Timestamp timestamp) {
+		this.dateInscription = timestamp;
 	}
     
 	
