@@ -18,6 +18,7 @@ public class Connexion extends HttpServlet {
     public static final String ATT_FORM         = "form";
     public static final String ATT_SESSION_USER = "sessionUtilisateur";
     public static final String VUE              = "/WEB-INF/connexion.jsp";
+    public static final String VUE_2              = "/WEB-INF/first_page_admin.jsp";
     public static final String CONF_DAO_FACTORY = "daofactory";
     
     private UtilisateurDao     utilisateurDao;
@@ -49,14 +50,18 @@ public class Connexion extends HttpServlet {
          */
         if ( form.getErreurs().isEmpty() ) {
             session.setAttribute( ATT_SESSION_USER, utilisateur );
+            this.getServletContext().getRequestDispatcher( VUE_2 ).forward( request, response );
+
         } else {
             session.setAttribute( ATT_SESSION_USER, null );
+            //this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+
         }
 
         /* Stockage du formulaire et du bean dans l'objet request */
         request.setAttribute( ATT_FORM, form );
         request.setAttribute( ATT_USER, utilisateur );
 
-        this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+       this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
     }
 }

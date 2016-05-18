@@ -78,46 +78,7 @@ public final class ConnexionForm {
         } else {
             resultat = "Échec de la connexion.";
         }
-
-        ///// Connexion avec la base de donnée pour vérifier que l'utilisateur existe
-        ///// Redirection vers la  page personnelle de l'utilsateur
-//        
-//        try {
-//        	
-//                User temp = utilisateurDao.trouver( utilisateur.getMail() ); // On cherche le user avec son email
-//                
-//                resultat = "Utilisateur trouvé.";
-//
-//              
-//                String Password_Recup = temp.getPassword();
-//                resultat = String.valueOf(motDePasse.length());
-//
-//
-//                
-//                if(Password_Recup.equals(motDePasse)){
-//                resultat = "Et c'est le bon mot de passe! ";
-//
-//                	
-//                }else{
-//                	
-//                }
-//            
-//                
-//        	
-//        	// comparer le mot de passe avec le mot de passe de cet utilisateur
-//        	
-//        	
-//        } catch ( DAOException e ) {
-//            resultat = "Échec de la connexion : une erreur imprévue est survenue, merci de réessayer dans quelques instants.";
-//            e.printStackTrace();
-//        }
-        
-        
-        
-        
-        
-        
-        
+            
         return utilisateur;
     }
 
