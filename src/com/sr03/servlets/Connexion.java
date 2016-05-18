@@ -56,12 +56,17 @@ public class Connexion extends HttpServlet {
             session.setAttribute( ATT_SESSION_USER, null );
             //this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
 
+            request.setAttribute( ATT_FORM, form );
+            request.setAttribute( ATT_USER, utilisateur );
+
+            this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+            
         }
 
         /* Stockage du formulaire et du bean dans l'objet request */
         request.setAttribute( ATT_FORM, form );
         request.setAttribute( ATT_USER, utilisateur );
 
-       this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+      // this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
     }
 }
