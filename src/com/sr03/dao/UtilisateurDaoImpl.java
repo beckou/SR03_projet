@@ -4,6 +4,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
+import org.joda.time.DateTime;
+
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.sr03.beans.User;
@@ -12,13 +14,17 @@ import static com.sr03.dao.DAOUtilitaire.*;
 public class UtilisateurDaoImpl implements UtilisateurDao {
     private DAOFactory daoFactory;
 
-    private static final String SQL_SELECT_PAR_EMAIL = "SELECT userID, mail, nom, mdp, dateCrea, tel, status, societe FROM User WHERE mail = ?";
+    //private static final String SQL_SELECT_PAR_EMAIL = "SELECT userID, mail, nom, mdp, dateCrea, tel, status, societe FROM User WHERE mail = ?";
+    private static final String SQL_SELECT_PAR_EMAIL = "SELECT mail FROM User WHERE mail = ?";
 
     private static final String SQL_INSERT = "INSERT INTO User (userID,  mail, nom, mdp, dateCrea, tel, status, societe) VALUES (?, ?, ?,?, NOW(),?,?,?)";
     
-    /* Implémentation de la méthode trouver() définie dans l'interface UtilisateurDao */
+	/*
+	 * Implémentation de la méthode trouver() définie dans l'interface
+	 * UtilisateurDao
+	 */
     @Override
-    public User trouver( String email ) throws DAOException {
+	public User trouver( String email ) throws DAOException {
     	 Connection connexion = null;
     	    PreparedStatement preparedStatement = null;
     	    ResultSet resultSet = null;
@@ -31,7 +37,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     	        resultSet = preparedStatement.executeQuery();
     	        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
     	        if ( resultSet.next() ) {
-    	            utilisateur = map( resultSet );
+    	            //utilisateur = map( resultSet );
     	        }
     	    } catch ( SQLException e ) {
     	        throw new DAOException( e );
@@ -95,7 +101,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
 	    utilisateur.setPhone(resultSet.getString( "tel" ));
 	    utilisateur.setState(resultSet.getInt( "status" ));
 	    utilisateur.setCompany(resultSet.getString( "societe" ));
-	    utilisateur.setDateInscription( (Timestamp) resultSet.getTimestamp( "dateCrea" ) );
+	    utilisateur.setDateInscription(new DateTime( resultSet.getTimestamp( "dateCrea" ) ));
 	    return utilisateur;
 	}
 }

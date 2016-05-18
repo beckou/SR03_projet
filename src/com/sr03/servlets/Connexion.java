@@ -9,14 +9,25 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.sr03.beans.User;
+import com.sr03.dao.UtilisateurDao;
 import com.sr03.forms.ConnexionForm;
+import com.sr03.dao.DAOFactory;
 
 public class Connexion extends HttpServlet {
     public static final String ATT_USER         = "utilisateur";
     public static final String ATT_FORM         = "form";
     public static final String ATT_SESSION_USER = "sessionUtilisateur";
     public static final String VUE              = "/WEB-INF/connexion.jsp";
+    public static final String CONF_DAO_FACTORY = "daofactory";
+    
+    private UtilisateurDao     utilisateurDao;
 
+    public void init() throws ServletException {
+        /* Récupération d'une instance de notre DAO Utilisateur */
+        this.utilisateurDao = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getUtilisateurDao();
+    }
+    
+    
     public void doGet( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         /* Affichage de la page de connexion */
         this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
@@ -24,7 +35,7 @@ public class Connexion extends HttpServlet {
 
     public void doPost( HttpServletRequest request, HttpServletResponse response ) throws ServletException, IOException {
         /* Préparation de l'objet formulaire */
-        ConnexionForm form = new ConnexionForm();
+        ConnexionForm form = new ConnexionForm(utilisateurDao);
 
         /* Traitement de la requête et récupération du bean en résultant */
         User utilisateur = form.connecterUtilisateur( request );

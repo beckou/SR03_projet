@@ -6,6 +6,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.sr03.beans.User;
+import com.sr03.dao.DAOException;
+import com.sr03.dao.UtilisateurDao;
 
 public final class ConnexionForm {
     private static final String CHAMP_EMAIL  = "email";
@@ -13,13 +15,18 @@ public final class ConnexionForm {
 
     private String              resultat;
     private Map<String, String> erreurs      = new HashMap<String, String>();
-
+    private UtilisateurDao      utilisateurDao;
+    
     public String getResultat() {
         return resultat;
     }
 
     public Map<String, String> getErreurs() {
         return erreurs;
+    }
+    
+    public ConnexionForm( UtilisateurDao utilisateurDao ) {
+        this.utilisateurDao = utilisateurDao;
     }
 
     public User connecterUtilisateur( HttpServletRequest request ) {
@@ -52,6 +59,29 @@ public final class ConnexionForm {
             resultat = "Échec de la connexion.";
         }
 
+        ///// Connexion avec la base de donnée pour vérifier que l'utilisateur existe
+        ///// Redirection vers la  page personnelle de l'utilsateur
+        
+        try {
+        	
+                utilisateurDao.trouver( utilisateur.getMail() ); // On cherche le user avec son email
+                resultat = "Utilisateur trouvé.";
+            
+        	
+        	
+        	// comparer le mot de passe avec le mot de passe de cet utilisateur
+        	
+        	
+        } catch ( DAOException e ) {
+            resultat = "Échec de la connexion : une erreur imprévue est survenue, merci de réessayer dans quelques instants.";
+            e.printStackTrace();
+        }
+        
+        
+        
+        
+        
+        
         return utilisateur;
     }
 

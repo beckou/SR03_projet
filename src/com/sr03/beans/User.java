@@ -1,6 +1,8 @@
 package com.sr03.beans;
 
 import com.sun.jmx.snmp.Timestamp;
+import org.joda.time.DateTime;
+
 
 public class User {
 
@@ -10,7 +12,7 @@ public class User {
 	private String    password;
 	private String 	  company;
 	private String    phone;
-    private java.sql.Timestamp  dateInscription;
+    private DateTime  dateInscription;
     private int   state;
 		
     
@@ -58,11 +60,11 @@ public class User {
 	public void setState(int state) {
 		this.state = state;
 	}
-	public java.sql.Timestamp  getDateInscription() {
+	public DateTime  getDateInscription() {
 		return dateInscription;
 	}
-	public void setDateInscription(java.sql.Timestamp timestamp) {
-		this.dateInscription = timestamp;
+	public void setDateInscription(DateTime date) {
+		this.dateInscription = date;
 	}
     
 	
