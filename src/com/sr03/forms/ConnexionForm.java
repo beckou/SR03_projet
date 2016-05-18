@@ -17,6 +17,8 @@ public final class ConnexionForm {
     private Map<String, String> erreurs      = new HashMap<String, String>();
     private UtilisateurDao      utilisateurDao;
     
+    private User temp; 
+    
     public String getResultat() {
         return resultat;
     }
@@ -44,13 +46,31 @@ public final class ConnexionForm {
         }
         utilisateur.setMail( email );
 
+        try{
+        	isUserInBdd(email);
+        } catch ( Exception e ) {
+            setErreur( CHAMP_EMAIL, e.getMessage() );
+        }
+        
+          
+        
         /* Validation du champ mot de passe. */
         try {
             validationMotDePasse( motDePasse );
+          
+            
         } catch ( Exception e ) {
             setErreur( CHAMP_PASS, e.getMessage() );
         }
         utilisateur.setPassword( motDePasse );
+        
+        try {
+            isPasswordCorrect( utilisateur, motDePasse );
+                 
+        } catch ( Exception e ) {
+            setErreur( CHAMP_PASS, e.getMessage() );
+        }
+        
 
         /* Initialisation du résultat global de la validation. */
         if ( erreurs.isEmpty() ) {
@@ -61,21 +81,37 @@ public final class ConnexionForm {
 
         ///// Connexion avec la base de donnée pour vérifier que l'utilisateur existe
         ///// Redirection vers la  page personnelle de l'utilsateur
+//        
+//        try {
+//        	
+//                User temp = utilisateurDao.trouver( utilisateur.getMail() ); // On cherche le user avec son email
+//                
+//                resultat = "Utilisateur trouvé.";
+//
+//              
+//                String Password_Recup = temp.getPassword();
+//                resultat = String.valueOf(motDePasse.length());
+//
+//
+//                
+//                if(Password_Recup.equals(motDePasse)){
+//                resultat = "Et c'est le bon mot de passe! ";
+//
+//                	
+//                }else{
+//                	
+//                }
+//            
+//                
+//        	
+//        	// comparer le mot de passe avec le mot de passe de cet utilisateur
+//        	
+//        	
+//        } catch ( DAOException e ) {
+//            resultat = "Échec de la connexion : une erreur imprévue est survenue, merci de réessayer dans quelques instants.";
+//            e.printStackTrace();
+//        }
         
-        try {
-        	
-                utilisateurDao.trouver( utilisateur.getMail() ); // On cherche le user avec son email
-                resultat = "Utilisateur trouvé.";
-            
-        	
-        	
-        	// comparer le mot de passe avec le mot de passe de cet utilisateur
-        	
-        	
-        } catch ( DAOException e ) {
-            resultat = "Échec de la connexion : une erreur imprévue est survenue, merci de réessayer dans quelques instants.";
-            e.printStackTrace();
-        }
         
         
         
@@ -92,7 +128,33 @@ public final class ConnexionForm {
         if ( email != null && !email.matches( "([^.@]+)(\\.[^.@]+)*@([^.@]+\\.)+([^.@]+)" ) ) {
             throw new Exception( "Merci de saisir une adresse mail valide." );
         }
+        
+     
     }
+    private void isUserInBdd( String email ) throws Exception {
+    	
+        temp = utilisateurDao.trouver( email ); // On cherche le user avec son email
+
+       if(temp == null){
+    	   throw new Exception( "Utilisateur non trouvé" );
+       }
+        
+     
+    }
+    
+    
+    private void isPasswordCorrect( User utilisateur, String password ) throws Exception {
+    	
+ 
+       String Password_Recup = utilisateur.getPassword();
+
+       String bddpass = temp.getPassword();
+       if(!Password_Recup.equals(bddpass)){
+    	   throw new Exception( "Mot de passe erroné" );
+       }
+              
+    }
+    
 
     /**
      * Valide le mot de passe saisi.

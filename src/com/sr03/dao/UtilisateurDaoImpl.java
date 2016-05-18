@@ -15,7 +15,8 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     private DAOFactory daoFactory;
 
     //private static final String SQL_SELECT_PAR_EMAIL = "SELECT userID, mail, nom, mdp, dateCrea, tel, status, societe FROM User WHERE mail = ?";
-    private static final String SQL_SELECT_PAR_EMAIL = "SELECT mail FROM User WHERE mail = ?";
+    private static final String SQL_SELECT_PAR_EMAIL = "SELECT * FROM User WHERE mail = ?";
+   // private static final String SQL_SELECT_PAR_EMAIL = "SELECT mail FROM User WHERE mail = ?";
 
     private static final String SQL_INSERT = "INSERT INTO User (userID,  mail, nom, mdp, dateCrea, tel, status, societe) VALUES (?, ?, ?,?, NOW(),?,?,?)";
     
@@ -37,7 +38,11 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     	        resultSet = preparedStatement.executeQuery();
     	        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
     	        if ( resultSet.next() ) {
-    	            //utilisateur = map( resultSet );
+    	        	// ligne sûrement à décommenter plus tard
+    	        	
+    	            utilisateur = map( resultSet );
+    	            
+    	            
     	        }
     	    } catch ( SQLException e ) {
     	        throw new DAOException( e );
@@ -102,6 +107,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
 	    utilisateur.setState(resultSet.getInt( "status" ));
 	    utilisateur.setCompany(resultSet.getString( "societe" ));
 	    utilisateur.setDateInscription(new DateTime( resultSet.getTimestamp( "dateCrea" ) ));
+	    
 	    return utilisateur;
 	}
 }
