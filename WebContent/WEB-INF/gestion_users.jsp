@@ -15,10 +15,15 @@
 <fieldset>
 <p>Bienvenue dans la gestion d'utilisateurs</p>
 <p>Recherche: </p>
-<form method="post" action="search_user">
-	<input type="search" placeholder="Entrez nom d'utilisateur" name="the_search">
-	<input type="submit" value="chercher" class="sansLabel" />
+
+	<form method="post" action="search_user"> <div class="recherche"> <input type="text" name="keyword" value="Recherche"/> <button>ok</button> </div> </form>
+
+<br>
+
+<form  class= "" method="post" action="add_user">
+	<input type="submit" value="Ajout utilisateur" class="sansLabel" />
 </form>
+
 <br>
  <table border="1" cellpadding="5" cellspacing="5">
         <tr>
