@@ -18,13 +18,29 @@
         <tr>
             <th>User ID</th>
             <th>User Name</th>
+            <th>User Password</th>
+            <th>User Mail</th>
+            <th>User Company</th>
+            <th>User Phone</th>
+            <th>User Date Inscription</th>
+            <th>User State</th>
         </tr>
  
         <c:forEach var="user" items="${userList}">
             <tr>
                 <td>${user.id}</td>
                 <td>${user.lastname}</td>
-              
+                <td>${user.password}</td>
+                <td>${user.mail}</td>
+                <td>${user.company}</td>
+                <td>${user.phone}</td>
+                <td>${user.dateInscription}</td>
+                <td>${user.state}</td>
+                <td>
+                <form method="get" action="gestion_users">
+                <input type="submit" value="Gestion utilisateurs" class="sansLabel" />
+                </form>
+                
             </tr>
         </c:forEach>
     </table>
