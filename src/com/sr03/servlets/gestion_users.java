@@ -46,16 +46,19 @@ public class gestion_users extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		int page = 1;
-        int recordsPerPage = 2;
+        int recordsPerPage = 3;
         if(request.getParameter("page") != null)
             page = Integer.parseInt(request.getParameter("page"));
 
         List<User> list = utilisateurDao.viewAllUsers((page-1)*recordsPerPage,
                                  recordsPerPage);
+        
+        request.getSession().getServletContext().log("userList lenghth is: "+ list.size());
+        
         int noOfRecords = utilisateurDao.getNoOfRecords();
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
          
-        request.getSession().getServletContext().log("coucoucouc");
+       // request.getSession().getServletContext().log("coucoucouc");
         
         request.setAttribute("userList", list);
         request.setAttribute("noOfPages", noOfPages);

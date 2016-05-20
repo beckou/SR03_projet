@@ -6,17 +6,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Gestion users</title>
+		<link type="text/css" rel="stylesheet" href="<c:url value="/inc/form.css"/>" />   
+
 </head>
 <body>
-<p>
 
-
-Gestion des users!!
-</p>
-
-
-<!-- 
+<fieldset>
+<p>Bienvenue dans la gestion d'utilisateurs</p>
  <table border="1" cellpadding="5" cellspacing="5">
         <tr>
             <th>User ID</th>
@@ -61,30 +58,7 @@ Gestion des users!!
 
 
 
-
-
-
-
-
-
-
-
--->
-
-<c:if test= "${!empty userList}">
-	<p class="succes">La liste de users n'est pas nulle! </p>
-</c:if>
-
-
-<c:forEach var="user" items="${userList}">
-            
-                <p>${user.id}</p>
-                <br>
-                <p>${user.lastname}</p>  <br>
-             
-            
-</c:forEach>
-
+</fieldset>
 
 
 

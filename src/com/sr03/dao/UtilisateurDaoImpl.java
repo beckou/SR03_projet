@@ -10,6 +10,7 @@ import org.joda.time.DateTime;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
 import com.sr03.beans.User;
 import static com.sr03.dao.DAOUtilitaire.*;
 
@@ -71,37 +72,67 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
  	   List<User> list = new ArrayList<User>();
        User utilisateur = null; 
 
+       Statement stmt = null;
+       
        System.out.println("heeeey dans la serlet de gestion user");
 
- 	    try {
- 	        /* Récupération d'une connexion depuis la Factory */
- 	        connexion = (Connection) daoFactory.getConnection();
- 	        preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_ALL, false );
- 	        resultSet = preparedStatement.executeQuery();
- 	        
-
- 	        
- 	        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
- 	        if ( resultSet.next() ) {
- 	        	// ligne sûrement à décommenter plus tard
- 	        	
- 	            utilisateur = map( resultSet );
- 	            
- 	            list.add(utilisateur);
- 	        }
- 	        
- 	       resultSet = preparedStatement.executeQuery("SELECT FOUND_ROWS()");
- 	        if(resultSet.next())
- 	            this.noOfRecords = resultSet.getInt(1);
- 	        
- 	    } catch ( SQLException e ) {
- 	        throw new DAOException( e );
- 	    } finally {
- 	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
- 	    } 
+// 	    try {
+// 	        /* Récupération d'une connexion depuis la Factory */
+// 	        connexion = (Connection) daoFactory.getConnection();
+// 	       
+// 	        preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_ALL, false );
+// 	        resultSet = preparedStatement.executeQuery();
+// 	        
+//
+// 	        
+// 	        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+// 	        if ( resultSet.next() ) {
+// 	        	// ligne sûrement à décommenter plus tard
+// 	        	
+// 	            utilisateur = map( resultSet );
+// 	            
+// 	            list.add(utilisateur);
+// 	        }
+// 	        
+// 	       resultSet = preparedStatement.executeQuery("SELECT FOUND_ROWS()");
+// 	        if(resultSet.next())
+// 	            this.noOfRecords = resultSet.getInt(1);
+// 	        
+// 	    } catch ( SQLException e ) {
+// 	        throw new DAOException( e );
+// 	    } finally {
+// 	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+// 	    } 
  	    
  	 
- 	   
+       String query = "select SQL_CALC_FOUND_ROWS * from User limit "
+               + offset + ", " + noOfRecords;
+      try {
+    	  connexion = (Connection) daoFactory.getConnection();
+           stmt = (Statement) connexion.createStatement();
+          ResultSet rs = stmt.executeQuery(query);
+          while (rs.next()) {
+	    	  utilisateur = map( rs );
+	          list.add(utilisateur);
+          }
+          rs.close();
+           
+          rs = stmt.executeQuery("SELECT FOUND_ROWS()");
+          if(rs.next())
+              this.noOfRecords = rs.getInt(1);
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }finally
+      {
+          try {
+              if(stmt != null)
+                  stmt.close();
+              if(connexion != null)
+            	  connexion.close();
+              } catch (SQLException e) {
+              e.printStackTrace();
+          }
+      }
  	    
  	    
  	    return list;

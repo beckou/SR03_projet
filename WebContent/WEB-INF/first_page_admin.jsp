@@ -8,8 +8,8 @@
 		<link type="text/css" rel="stylesheet" href="<c:url value="/inc/form.css"/>" />   
  </head>
     <body>
+    <fieldset>
         <form method="get" action="gestion_users">
-            <fieldset>
                 <legend>Bienvenue Administrateur</legend>
                 <p>Voici vos actions possibles: </p>
 
@@ -21,7 +21,27 @@
                 
                 <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
                 
-            </fieldset>
         </form>
+        <form method="get" action="gestion_QCM">
+             
+                <br />
+
+                <input type="submit" value="Gestion QCM" class="sansLabel" />
+                <br />
+                
+                <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
+                
+        </form>
+        <form method="get" action="gestion_parcours">
+             
+                <br />
+
+                <input type="submit" value="Gestion parcours" class="sansLabel" />
+                <br />
+                
+                <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
+                
+        </form>
+        </fieldset>
     </body>
 </html>
