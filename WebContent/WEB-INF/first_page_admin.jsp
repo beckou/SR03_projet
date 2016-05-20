@@ -8,7 +8,7 @@
 		<link type="text/css" rel="stylesheet" href="<c:url value="/inc/form.css"/>" />   
  </head>
     <body>
-        <form method="post" action="first_page_admin">
+        <form method="get" action="gestion_users">
             <fieldset>
                 <legend>Bienvenue Administrateur</legend>
                 <p>Voici vos actions possibles: </p>

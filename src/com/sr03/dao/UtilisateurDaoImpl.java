@@ -3,6 +3,8 @@ package com.sr03.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.joda.time.DateTime;
 
@@ -13,12 +15,17 @@ import static com.sr03.dao.DAOUtilitaire.*;
 
 public class UtilisateurDaoImpl implements UtilisateurDao {
     private DAOFactory daoFactory;
-
+    private int noOfRecords;
+    
     //private static final String SQL_SELECT_PAR_EMAIL = "SELECT userID, mail, nom, mdp, dateCrea, tel, status, societe FROM User WHERE mail = ?";
     private static final String SQL_SELECT_PAR_EMAIL = "SELECT * FROM User WHERE mail = ?";
    // private static final String SQL_SELECT_PAR_EMAIL = "SELECT mail FROM User WHERE mail = ?";
 
     private static final String SQL_INSERT = "INSERT INTO User (userID,  mail, nom, mdp, dateCrea, tel, status, societe) VALUES (?, ?, ?,?, NOW(),?,?,?)";
+    
+    private static final String SQL_SELECT= "SELECT * FROM User";
+
+    //private static final String SQL_SELECT_ALL = "select SQL_CALC_FOUND_ROWS * from employee limit " + offset + ", " + noOfRecords;
     
 	/*
 	 * Implémentation de la méthode trouver() définie dans l'interface
@@ -52,6 +59,61 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
 
     	    return utilisateur;
     }
+    
+    @Override
+    public List<User> viewAllUsers( int offset,  int noOfRecords)
+    {
+    	Connection connexion = null;
+ 	    PreparedStatement preparedStatement = null;
+ 	    ResultSet resultSet = null;
+
+ 	   String SQL_SELECT_ALL = "SELECT SQL_CALC_FOUND_ROWS * from User limit " + offset + ", " + noOfRecords;
+ 	   List<User> list = new ArrayList<User>();
+       User utilisateur = null; 
+
+       System.out.println("heeeey dans la serlet de gestion user");
+
+ 	    try {
+ 	        /* Récupération d'une connexion depuis la Factory */
+ 	        connexion = (Connection) daoFactory.getConnection();
+ 	        preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_ALL, false );
+ 	        resultSet = preparedStatement.executeQuery();
+ 	        
+
+ 	        
+ 	        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
+ 	        if ( resultSet.next() ) {
+ 	        	// ligne sûrement à décommenter plus tard
+ 	        	
+ 	            utilisateur = map( resultSet );
+ 	            
+ 	            list.add(utilisateur);
+ 	        }
+ 	        
+ 	       resultSet = preparedStatement.executeQuery("SELECT FOUND_ROWS()");
+ 	        if(resultSet.next())
+ 	            this.noOfRecords = resultSet.getInt(1);
+ 	        
+ 	    } catch ( SQLException e ) {
+ 	        throw new DAOException( e );
+ 	    } finally {
+ 	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
+ 	    } 
+ 	    
+ 	 
+ 	   
+ 	    
+ 	    
+ 	    return list;
+
+	
+    }
+    
+    @Override
+    public int getNoOfRecords() {
+        return noOfRecords;
+    }
+    
 
     /* Implémentation de la méthode creer() définie dans l'interface UtilisateurDao */
     @Override
@@ -110,4 +172,6 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
 	    
 	    return utilisateur;
 	}
+
+
 }

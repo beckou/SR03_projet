@@ -37,6 +37,8 @@ public class first_page_admin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
         this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );
+        request.getSession().getServletContext().log("coucoucouc");
+
 	}
 
 	/**
