@@ -14,6 +14,12 @@
 
 <fieldset>
 <p>Bienvenue dans la gestion d'utilisateurs</p>
+<p>Recherche: </p>
+<form method="post" action="search_user">
+	<input type="search" placeholder="Entrez nom d'utilisateur" name="the_search">
+	<input type="submit" value="chercher" class="sansLabel" />
+</form>
+<br>
  <table border="1" cellpadding="5" cellspacing="5">
         <tr>
             <th>User ID</th>
@@ -24,6 +30,8 @@
             <th>User Phone</th>
             <th>User Date Inscription</th>
             <th>User State</th>
+            <th> </th>
+            <th> </th>
         </tr>
  
         <c:forEach var="user" items="${userList}">
@@ -36,10 +44,12 @@
                 <td>${user.phone}</td>
                 <td>${user.dateInscription}</td>
                 <td>${user.state}</td>
-                <td>
-                <form method="get" action="gestion_users">
-                <input type="submit" value="Gestion utilisateurs" class="sansLabel" />
-                </form>
+                <td><form method="post" action="modify_user">
+                <input type="submit" value="modifier" class="sansLabel" />
+                </form></td>
+                 <td><form method="post" action="delete_user">
+                <input type="submit" value="supprimer" class="sansLabel" />
+                </form></td>
                 
             </tr>
         </c:forEach>
