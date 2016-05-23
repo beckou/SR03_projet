@@ -76,4 +76,8 @@ public class DAOFactory {
     public UtilisateurDao getUtilisateurDao() {
         return new UtilisateurDaoImpl( this );
     }
+    
+    public QuizzDAO getQuizzDao() {
+        return new QuizzDaoImpl( this );
+    }
 }
