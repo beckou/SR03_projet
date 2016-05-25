@@ -2,6 +2,7 @@ package com.sr03.servlets;
 
 import java.io.IOException;
 
+import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.sr03.mail.EmailSessionBean;
 import com.sr03.beans.User;
 import com.sr03.dao.UtilisateurDao;
 import com.sr03.dao.DAOFactory;
@@ -30,6 +32,9 @@ public class inscription extends HttpServlet {
 	public static final String VUE_FORM = "/WEB-INF/add_user.jsp";
 
 	private UtilisateurDao userDao;
+	
+	@EJB
+	private EmailSessionBean emailBean;
 
 	public void init() throws ServletException {
 		/* Récupération d'une instance de notre DAO Utilisateur */
@@ -71,9 +76,19 @@ public class inscription extends HttpServlet {
 		/* Ajout du bean et de l'objet métier à l'objet requête */
 		request.setAttribute(ATT_USER, user);
 		request.setAttribute(ATT_FORM, form);
+		
+		
 
 		if (form.getErreurs().isEmpty()) {
 			/* Si aucune erreur, alors affichage de la fiche récapitulative */
+			
+			// envoie mail à l'user ajouté
+			String to = user.getMail();
+			String subject = "Inscrition site d'évaluation";
+			String body = "login: "+ user.getMail()+" Mdp: "+user.getPassword();
+			
+			emailBean = new EmailSessionBean();
+			emailBean.sendEmail(to, subject, body);
 
 			request.getSession().getServletContext().log("La création du user s'est bien déroulée");
 
@@ -83,5 +98,18 @@ public class inscription extends HttpServlet {
 			this.getServletContext().getRequestDispatcher(VUE_FORM).forward(request, response);
 		}
 	}
+	
+
+	
+//	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+//			throws ServletException, IOException {
+//		
+//		String to = request.getParameter("to");
+//		String subject = request.getParameter("subject");
+//		String body = request.getParameter("body");
+//		
+//		emailBean.sendEmail(to, subject, body);
+//	
+//	}
 
 }
