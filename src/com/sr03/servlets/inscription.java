@@ -1,6 +1,8 @@
 package com.sr03.servlets;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
@@ -27,6 +29,7 @@ public class inscription extends HttpServlet {
 	public static final String ATT_USER = "user";
 	public static final String ATT_FORM = "form";
 	public static final String SESSION_USERS = "users";
+	
 
 	public static final String VUE_SUCCES = "/WEB-INF/gestion_users.jsp";
 	public static final String VUE_FORM = "/WEB-INF/add_user.jsp";
@@ -89,6 +92,23 @@ public class inscription extends HttpServlet {
 			
 			emailBean = new EmailSessionBean();
 			emailBean.sendEmail(to, subject, body);
+			
+			
+			
+			
+            HttpSession session = request.getSession();
+            @SuppressWarnings("unchecked")
+			Map<Long, User> users = (HashMap<Long, User>) session.getAttribute( SESSION_USERS );
+            /* Si aucune map n'existe, alors initialisation d'une nouvelle map */
+            if ( users == null ) {
+            	users = new HashMap<Long, User>();
+            }
+            /* Puis ajout du client courant dans la map */
+            users.put( user.getId(), user );
+            /* Et enfin (ré)enregistrement de la map en session */
+            session.setAttribute( SESSION_USERS, users );
+			
+			
 
 			request.getSession().getServletContext().log("La création du user s'est bien déroulée");
 

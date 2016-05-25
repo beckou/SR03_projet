@@ -81,6 +81,60 @@ public class InscriptionForm {
 
 	        return user;
 	    }
+	    
+	    
+	    
+	    public User modifierUser( HttpServletRequest request ) {
+	        String nom = getValeurChamp( request, CHAMP_NOM );
+	        String telephone = getValeurChamp( request, CHAMP_TEL );
+	        String email = getValeurChamp( request, CHAMP_EMAIL );
+	        String mdp = getValeurChamp( request, CHAMP_PASS );
+	        String entreprise = getValeurChamp( request, CHAMP_ENTREPRISE );
+	        int statut = Integer.parseInt(getValeurChamp( request, CHAMP_STATUT ));
+	        
+
+	        User user = new User();
+
+	        try {
+	            validationNom( nom );
+	        } catch ( Exception e ) {
+	            setErreur( CHAMP_NOM, e.getMessage() );
+	        }
+	        user.setLastname( nom );
+
+
+	        try {
+	            validationTelephone( telephone );
+	        } catch ( Exception e ) {
+	            setErreur( CHAMP_TEL, e.getMessage() );
+	        }
+	        user.setPhone( telephone );
+
+	        try {
+	            validationEmail( email );
+	        } catch ( Exception e ) {
+	            setErreur( CHAMP_EMAIL, e.getMessage() );
+	        }
+	        user.setMail( email );
+
+	        user.setPassword(mdp);
+	        user.setCompany(entreprise);
+	        user.setState(statut);
+	        
+	        
+	        
+	        if ( erreurs.isEmpty() ) {
+	        	userDao.creer(user);
+	            resultat = "Succès de la création du client.";
+	        } else {
+	            resultat = "Échec de la création du client.";
+	        }
+
+	        return user;
+	    }
+	    
+	    
+	    
 
 	    private void validationNom( String nom ) throws Exception {
 	        if ( nom != null ) {

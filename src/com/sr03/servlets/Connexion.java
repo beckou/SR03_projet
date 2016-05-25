@@ -19,6 +19,7 @@ public class Connexion extends HttpServlet {
     public static final String ATT_SESSION_USER = "sessionUtilisateur";
     public static final String VUE              = "/WEB-INF/connexion.jsp";
     public static final String VUE_2              = "/WEB-INF/first_page_admin.jsp";
+    public static final String VUE_3              = "/WEB-INF/first_page_user.jsp";
     public static final String CONF_DAO_FACTORY = "daofactory";
     
     private UtilisateurDao     utilisateurDao;
@@ -49,9 +50,24 @@ public class Connexion extends HttpServlet {
          * Utilisateur à la session, sinon suppression du bean de la session.
          */
         if ( form.getErreurs().isEmpty() ) {
-            session.setAttribute( ATT_SESSION_USER, utilisateur );
-            this.getServletContext().getRequestDispatcher( VUE_2 ).forward( request, response );
+        	
+  		  session.setAttribute( ATT_SESSION_USER, utilisateur );
 
+        	if(utilisateur.getIsAdmin()){
+        		// user is an admin
+                  this.getServletContext().getRequestDispatcher( VUE_2 ).forward( request, response );
+
+        	}else{
+        		// user is not an admin
+
+                this.getServletContext().getRequestDispatcher( VUE_3 ).forward( request, response );
+
+        	}
+        	
+          
+            
+            
+            
         } else {
             session.setAttribute( ATT_SESSION_USER, null );
             //this.getServletContext().getRequestDispatcher( VUE ).forward( request, response );

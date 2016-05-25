@@ -14,7 +14,9 @@ public class User {
 	private String    phone;
     private DateTime  dateInscription;
     private int   state;
+    private Boolean isAdmin;
 		
+    
     
     public Long getId(){
     	return id;
@@ -65,6 +67,12 @@ public class User {
 	}
 	public void setDateInscription(DateTime date) {
 		this.dateInscription = date;
+	}
+	public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
 	}
     
 	

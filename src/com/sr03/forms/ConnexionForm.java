@@ -12,6 +12,7 @@ import com.sr03.dao.UtilisateurDao;
 public final class ConnexionForm {
     private static final String CHAMP_EMAIL  = "email";
     private static final String CHAMP_PASS   = "motdepasse";
+    
 
     private String              resultat;
     private Map<String, String> erreurs      = new HashMap<String, String>();
@@ -53,6 +54,14 @@ public final class ConnexionForm {
         }
         
           
+        Boolean temp = isUserAdmin(email);
+        if(temp){
+        	utilisateur.setIsAdmin(true);
+        }else{
+        	utilisateur.setIsAdmin(false);
+        }
+        
+
         
         /* Validation du champ mot de passe. */
         try {
@@ -71,7 +80,8 @@ public final class ConnexionForm {
             setErreur( CHAMP_PASS, e.getMessage() );
         }
         
-
+        
+      
         /* Initialisation du résultat global de la validation. */
         if ( erreurs.isEmpty() ) {
             resultat = "Succès de la connexion.";
@@ -114,6 +124,18 @@ public final class ConnexionForm {
     	   throw new Exception( "Mot de passe erroné" );
        }
               
+    }
+    
+    private Boolean isUserAdmin(String mail){
+		
+    	if(mail.equals("becky@gmail.com" ) || mail.equals("raphael@gmail.com")){
+    		return true;
+    	}else{
+        	return false;
+    	}
+    	
+    	
+      	
     }
     
 
