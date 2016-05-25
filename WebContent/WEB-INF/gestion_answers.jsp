@@ -9,9 +9,10 @@
 </head>
 <body>
 
- "GESTION DU QUESTIONNAIRE ${questionID}"
+ "GESTION DE LA QUESTION ${questionID}"
 <fieldset>
-
+<form method="get" action="add_answer">
+            	<button type="submit" name="questionID" value="${questionID}">Add Answer</button></form>
  <table border="1" cellpadding="5" cellspacing="5">
         <tr>
             <th>Answer ID</th>
@@ -62,7 +63,24 @@
         <td><a href="gestion_answers?page=${currentPage + 1}">Next</a></td>
     </c:if>
 
+               <form method="post" action="gestion_answers">
+            <fieldset>
+                <legend>Changer la question</legend>
+                <p>Veuillez remplir les champs à changer pour la question ${quizzID}</p>
 
+                <label for="intitule">Nouveau Nom :</label>
+                <input type="textarea" id="intitule" name="intitule" value="" />
+                <br />
+                
+                <label for="ordre">Changer Ordre :</label>
+                <input type="text" id="ordre" name="ordre" value="" />
+                <br />
+ 				<input type="hidden" name="idQuizz" value="${quizzID}">
+                <input type="submit" value="Changer" class="sansLabel" />
+                <br />
+            </fieldset>
+        </form>
+    
     
     
     

@@ -1,5 +1,8 @@
 package com.sr03.dao;
 
+import static com.sr03.dao.DAOUtilitaire.fermeturesSilencieuses;
+import static com.sr03.dao.DAOUtilitaire.initialisationRequetePreparee;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -18,6 +21,8 @@ public class QuestionDaoImpl implements QuestionDAO {
 
 	private DAOFactory daoFactory;
     private int noOfRecords;
+
+    private static final String SQL_INSERT = "INSERT INTO Questions (idQuestion,  idQuestionnary, intitule) VALUES (?, ?, ?)";
 
     @Override
 
@@ -87,7 +92,33 @@ public class QuestionDaoImpl implements QuestionDAO {
 
 	@Override
 	public void creer(Question question) throws DAOException {
-		// TODO Auto-generated method stub
+		Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet valeursAutoGenerees = null;
+
+        try {
+            /* Récupération d'une connexion depuis la Factory */
+            connexion = (Connection) daoFactory.getConnection();
+            preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, question.getId(), question.getIdQuizz(), question.getIntitule());
+            int statut = preparedStatement.executeUpdate();
+            /* Analyse du statut retourné par la requête d'insertion */   
+            if ( statut == 0 ) {
+                throw new DAOException( "Échec de la création de la question, aucune ligne ajoutée dans la table." );
+            }
+            /* Récupération de l'id auto-généré par la requête d'insertion */
+            valeursAutoGenerees = preparedStatement.getGeneratedKeys();
+            if ( valeursAutoGenerees.next() ) {
+                /* Puis initialisation de la propriété id du bean Utilisateur avec sa valeur */
+                question.setId( (int) valeursAutoGenerees.getLong( 1 ) );
+            } else {
+                throw new DAOException( "Échec de la création de la question en base, aucun ID auto-généré retourné." );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        } finally {
+            fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
+        }
+    	
 		
 	}
 

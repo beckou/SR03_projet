@@ -11,7 +11,8 @@
 
  "GESTION DU QUESTIONNAIRE ${quizzID}"
 <fieldset>
-
+<form method="get" action="add_question">
+            	<button type="submit" name="quizzID" value="${quizzID}">Add Question</button></form>
  <table border="1" cellpadding="5" cellspacing="5">
         <tr>
             <th>Question ID</th>
@@ -59,10 +60,20 @@
     <c:if test="${currentPage lt noOfPages}">
         <td><a href="gestion_of_quizz?page=${currentPage + 1}">Next</a></td>
     </c:if>
-
-
     
-    
+               <form method="post" action="gestion_of_quizz">
+            <fieldset>
+                <legend>Changer le questionnaire</legend>
+                <p>Veuillez remplir les champs à changer pour le questionnaire ${quizzID}</p>
+
+                <label for="intitule">Nouveau Nom :</label>
+                <input type="textarea" id="intitule" name="intitule" value="" />
+                <br />
+ 				<input type="hidden" name="idQuizz" value="${quizzID}">
+                <input type="submit" value="Changer" class="sansLabel" />
+                <br />
+            </fieldset>
+        </form>
     
 </fieldset>
 
