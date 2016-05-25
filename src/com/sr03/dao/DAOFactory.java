@@ -80,4 +80,11 @@ public class DAOFactory {
     public QuizzDAO getQuizzDao() {
         return new QuizzDaoImpl( this );
     }
+    
+    public QuestionDAO getQuestionDao() {
+        return new QuestionDaoImpl( this );
+    }
+    public AnswerDAO getAnswerDao() {
+        return new AnswerDaoImpl( this );
+    }
 }

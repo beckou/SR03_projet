@@ -1,29 +1,31 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title> Gestion Questionnaire</title>
+<title>Questions</title>
 </head>
 <body>
+
+ "GESTION DU QUESTIONNAIRE ${quizzID}"
 <fieldset>
 
  <table border="1" cellpadding="5" cellspacing="5">
         <tr>
-            <th>Quizz ID</th>
-            <th>Quizz Name</th>
+            <th>Question ID</th>
+            <th>Question Name</th>
             <th>Action</th>
 
         </tr>
  
-        <c:forEach var="quizz" items="${quizzList}">
+        <c:forEach var="question" items="${questionList}">
             <tr>
-                <td>${quizz.id}</td>
-                <td>${quizz.intitule}</td>
-            	<td>        <form method="get" action="gestion_of_quizz">
-            	<button type="submit" name="quizzID" value="${quizz.id}">Modify Quizz</button></form>
+                <td>${question.id}</td>
+                <td>${question.intitule}</td>
+            	<td>        <form method="get" action="gestion_answers">
+            	<button type="submit" name="questID" value="${question.id}">Modify Question</button></form>
             	</td>
             	
             </tr>
@@ -33,7 +35,7 @@
     
     <%--For displaying Previous link except for the 1st page --%>
     <c:if test="${currentPage != 1}">
-        <td><a href="gestion_quizz?page=${currentPage - 1}">Previous</a></td>
+        <td><a href="gestion_of_quizz?page=${currentPage - 1}">Previous</a></td>
     </c:if>
  
     <%--For displaying Page numbers. 
@@ -46,7 +48,7 @@
                         <td>${i}</td>
                     </c:when>
                     <c:otherwise>
-                        <td><a href="gestion_quizz?page=${i}">${i}</a></td>
+                        <td><a href="gestion_of_quizz?page=${i}">${i}</a></td>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
@@ -55,7 +57,7 @@
      
     <%--For displaying Next link --%>
     <c:if test="${currentPage lt noOfPages}">
-        <td><a href="gestion_quizz?page=${currentPage + 1}">Next</a></td>
+        <td><a href="gestion_of_quizz?page=${currentPage + 1}">Next</a></td>
     </c:if>
 
 
@@ -68,5 +70,6 @@
 	<%-- Si l'utilisateur existe en session, alors on affiche son adresse email. --%>
 	<p class="succes">Vous êtes connecté(e) avec l'adresse : ${sessionScope.sessionUtilisateur.mail}</p>
 </c:if>
+    
 </body>
 </html>

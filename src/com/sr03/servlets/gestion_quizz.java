@@ -21,7 +21,7 @@ public class gestion_quizz extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
     public static final String VUE              = "/WEB-INF/gestion_quizz.jsp";
-   
+
    public static final String CONF_DAO_FACTORY = "daofactory";
     
     private QuizzDAO     quizzDAO;
@@ -35,6 +35,9 @@ public class gestion_quizz extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
+    
+
+
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
