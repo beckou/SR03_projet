@@ -22,7 +22,7 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     private static final String SQL_SELECT_PAR_EMAIL = "SELECT * FROM User WHERE mail = ?";
    // private static final String SQL_SELECT_PAR_EMAIL = "SELECT mail FROM User WHERE mail = ?";
 
-    private static final String SQL_INSERT = "INSERT INTO User (userID,  mail, nom, mdp, dateCrea, tel, status, societe) VALUES (?, ?, ?,?, NOW(),?,?,?)";
+    private static final String SQL_INSERT = "INSERT INTO User (userID,  mail, nom, mdp, dateCrea, tel, status, societe) VALUES (?, ?, ?,?, ?,?,?,?)";
     
     private static final String SQL_SELECT= "SELECT * FROM User";
 

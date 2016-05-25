@@ -4,7 +4,7 @@
 <html>
    <head>
         <meta charset="utf-8" />
-        <title>Connexion</title>
+        <title>Inscription</title>
 		<link type="text/css" rel="stylesheet" href="<c:url value="/inc/form.css"/>" />   
  </head>
     <body>
@@ -19,10 +19,6 @@
 
                 <label for="motdepasse">Mot de passe <span class="requis">*</span></label>
                 <input type="password" id="motdepasse" name="motdepasse" value="" size="20" maxlength="20" />
-                <br />
-
-                <label for="confirmation">Confirmation du mot de passe <span class="requis">*</span></label>
-                <input type="password" id="confirmation" name="confirmation" value="" size="20" maxlength="20" />
                 <br />
 
                 <label for="nom">Nom d'utilisateur</label>

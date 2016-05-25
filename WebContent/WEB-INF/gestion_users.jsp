@@ -20,11 +20,7 @@
 
 <br>
 
-<form  class= "" method="post" action="add_user">
-	<input type="submit" value="Ajout utilisateur" class="sansLabel" />
-</form>
 
-<br>
  <table border="1" cellpadding="5" cellspacing="5">
         <tr>
             <th>User ID</th>
@@ -87,7 +83,11 @@
         <td><a href="gestion_users?page=${currentPage + 1}">Next</a></td>
     </c:if>
 
+<form  class= "" method="post" action="add_user">
+	<input type="submit" value="Ajout utilisateur" class="sansLabel" />
+</form>
 
+<br>
 
 </fieldset>
 
