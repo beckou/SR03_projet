@@ -22,7 +22,7 @@
                 <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
                 
         </form>
-        <form method="get" action="gestion_QCM">
+        <form method="get" action="gestion_quizz">
              
                 <br />
 
@@ -42,6 +42,7 @@
                 <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
                 
         </form>
+        
         </fieldset>
     </body>
 </html>

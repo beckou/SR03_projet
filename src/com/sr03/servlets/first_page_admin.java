@@ -15,6 +15,7 @@ public class first_page_admin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     public static final String VUE              = "/WEB-INF/first_page_admin.jsp";
     public static final String VUE2              = "/WEB-INF/gestion_users.jsp";
+    public static final String VUE3              = "/WEB-INF/gestion_quizz.jsp";
 
 
     
