@@ -25,6 +25,9 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     private static final String SQL_INSERT = "INSERT INTO User (userID,  mail, nom, mdp, dateCrea, tel, status, societe) VALUES (?, ?, ?,?, ?,?,?,?)";
     
     private static final String SQL_SELECT= "SELECT * FROM User";
+    
+    private static final String SQL_DELETE_PAR_ID = "DELETE FROM User WHERE userID = ?";
+
 
     //private static final String SQL_SELECT_ALL = "select SQL_CALC_FOUND_ROWS * from employee limit " + offset + ", " + noOfRecords;
     
@@ -76,34 +79,6 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
        
        System.out.println("heeeey dans la serlet de gestion user");
 
-// 	    try {
-// 	        /* Récupération d'une connexion depuis la Factory */
-// 	        connexion = (Connection) daoFactory.getConnection();
-// 	       
-// 	        preparedStatement = initialisationRequetePreparee( connexion, SQL_SELECT_ALL, false );
-// 	        resultSet = preparedStatement.executeQuery();
-// 	        
-//
-// 	        
-// 	        /* Parcours de la ligne de données de l'éventuel ResulSet retourné */
-// 	        if ( resultSet.next() ) {
-// 	        	// ligne sûrement à décommenter plus tard
-// 	        	
-// 	            utilisateur = map( resultSet );
-// 	            
-// 	            list.add(utilisateur);
-// 	        }
-// 	        
-// 	       resultSet = preparedStatement.executeQuery("SELECT FOUND_ROWS()");
-// 	        if(resultSet.next())
-// 	            this.noOfRecords = resultSet.getInt(1);
-// 	        
-// 	    } catch ( SQLException e ) {
-// 	        throw new DAOException( e );
-// 	    } finally {
-// 	        fermeturesSilencieuses( resultSet, preparedStatement, connexion );
-// 	    } 
- 	    
  	 
        String query = "select SQL_CALC_FOUND_ROWS * from User limit "
                + offset + ", " + noOfRecords;
@@ -182,6 +157,49 @@ public class UtilisateurDaoImpl implements UtilisateurDao {
     UtilisateurDaoImpl( DAOFactory daoFactory ) {
         this.daoFactory = daoFactory;
     }
+    
+    @Override
+    public void supprimer( User user ) throws DAOException {
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connexion = (Connection) daoFactory.getConnection();
+            preparedStatement = initialisationRequetePreparee( connexion, SQL_DELETE_PAR_ID, true, user.getId() );
+            int statut = preparedStatement.executeUpdate();
+            if ( statut == 0 ) {
+                throw new DAOException( "Échec de la suppression du client, aucune ligne supprimée de la table." );
+            } else {
+                user.setId( null );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        } finally {
+            fermeturesSilencieuses( preparedStatement, connexion );
+        }
+    }
+
+    @Override
+    public void supprimerParId( Long id ) throws DAOException {
+        Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+
+        try {
+            connexion = (Connection) daoFactory.getConnection();
+            preparedStatement = initialisationRequetePreparee( connexion, SQL_DELETE_PAR_ID, true,id );
+            int statut = preparedStatement.executeUpdate();
+            if ( statut == 0 ) {
+                throw new DAOException( "Échec de la suppression du client, aucune ligne supprimée de la table." );
+            } else {
+              //  user.setId( null );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        } finally {
+            fermeturesSilencieuses( preparedStatement, connexion );
+        }
+    }
+
     
     
     

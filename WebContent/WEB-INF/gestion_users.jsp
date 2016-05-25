@@ -31,8 +31,8 @@
             <th>User Phone</th>
             <th>User Date Inscription</th>
             <th>User State</th>
-            <th> </th>
-            <th> </th>
+            <th>Action</th>
+            <th>Action</th>
         </tr>
  
         <c:forEach var="user" items="${userList}">
@@ -45,12 +45,13 @@
                 <td>${user.phone}</td>
                 <td>${user.dateInscription}</td>
                 <td>${user.state}</td>
-                <td><form method="post" action="modify_user">
-                <input type="submit" value="modifier" class="sansLabel" />
+                <td>   <form method="post" action="modify_user">
+                <button type="submit" value="${user.id}" id="id" name="id" class="sansLabel" >modifier</button>
                 </form></td>
                  <td><form method="post" action="delete_user">
-                <input type="submit" value="supprimer" class="sansLabel" />
+                <button type="submit" value="${user.id}" id="id" name="id" class="sansLabel">supprimer</button>
                 </form></td>
+                
                 
             </tr>
         </c:forEach>

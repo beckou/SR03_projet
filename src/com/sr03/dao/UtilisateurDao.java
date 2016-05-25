@@ -12,6 +12,10 @@ public interface UtilisateurDao {
 
 	List<User> viewAllUsers(int offset, int noOfRecords);
 	
+    void supprimer( User client );
+    
+    void supprimerParId( Long id);
+	
 	int getNoOfRecords();
 
 }
