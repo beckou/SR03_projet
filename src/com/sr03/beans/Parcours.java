@@ -3,7 +3,7 @@ package com.sr03.beans;
 public class Parcours {
 	private Integer      id;
 	private Integer		idQuizz;
-	private Integer		userID;
+	private Long		userID;
 	private Integer    score;
 	private Integer    time;
 
@@ -19,7 +19,7 @@ public Integer getIdQuizz() {
 	public Integer getTime() {
 		return time;
 	}
-	public Integer getUserID() {
+	public Long getUserID() {
 		return userID;
 	}
 	public void setId(Integer id) {
@@ -34,8 +34,8 @@ public Integer getIdQuizz() {
 	public void setTime(Integer time) {
 		this.time = time;
 	}
-	public void setUserID(Integer userID) {
-		this.userID = userID;
+	public void setUserID(Long idUser) {
+		this.userID = idUser;
 	}
 	
 }

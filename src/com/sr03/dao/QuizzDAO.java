@@ -17,5 +17,7 @@ public interface QuizzDAO {
 	
 	int getNoOfRecords();
 
+	List<Quizz> viewAllQuizz();
+
 
 }

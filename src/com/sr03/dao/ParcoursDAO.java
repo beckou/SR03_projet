@@ -20,5 +20,8 @@ public interface ParcoursDAO {
 	
 	List<Parcours> viewAllParcoursQ(int offset, int noOfRecords, int id_user);
 
+	List<Parcours> viewAllParcours(Long idUser);
+
+
 
 }

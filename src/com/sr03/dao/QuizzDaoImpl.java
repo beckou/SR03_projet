@@ -33,7 +33,7 @@ public class QuizzDaoImpl implements QuizzDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
 	public List<Quizz> viewAllQuizz(int offset, int noOfRecords) {
 		Connection connexion = null;
@@ -118,6 +118,53 @@ public class QuizzDaoImpl implements QuizzDAO {
         } finally {
             fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
         }		
+	}
+
+	@Override
+	public List<Quizz> viewAllQuizz() {
+		Connection connexion = null;
+ 	    PreparedStatement preparedStatement = null;
+ 	    ResultSet resultSet = null;
+
+ 	   String SQL_SELECT_ALL = "SELECT * from Quizz";
+ 	   List<Quizz> list = new ArrayList<Quizz>();
+       Quizz quizz = null; 
+
+       Statement stmt = null;
+       
+       System.out.println("Servlet Quizz");
+
+ 	 
+       String query = "select * from Quizz";
+      try {
+    	  connexion = (Connection) daoFactory.getConnection();
+           stmt = (Statement) connexion.createStatement();
+          ResultSet rs = stmt.executeQuery(query);
+          while (rs.next()) {
+	    	  quizz = map( rs );
+	          list.add(quizz);
+          }
+          rs.close();
+           
+          rs = stmt.executeQuery("SELECT FOUND_ROWS()");
+          if(rs.next())
+              this.noOfRecords = rs.getInt(1);
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }finally
+      {
+          try {
+              if(stmt != null)
+                  stmt.close();
+              if(connexion != null)
+            	  connexion.close();
+              } catch (SQLException e) {
+              e.printStackTrace();
+          }
+      }
+ 	    
+ 	    
+ 	    return list;
 	}
     
 }

@@ -19,7 +19,7 @@ public class ParcoursDaoImpl implements ParcoursDAO {
 
 	private DAOFactory daoFactory;
     private int noOfRecords;
-    private static final String SQL_INSERT = "INSERT INTO Parcours (idAnswer,  idQuest, intitule, status) VALUES (?, ?, ?, ?)";
+    private static final String SQL_INSERT = "INSERT INTO Parcours (idParcours,  Associated_user, idQuestionnary, score, time) VALUES (?, ?, ?, ?, ?)";
 
     
 
@@ -36,7 +36,7 @@ public class ParcoursDaoImpl implements ParcoursDAO {
 		Parcours parcours = new Parcours();
 		parcours.setId( resultSet.getInt( "idParcours" ) );
 		parcours.setIdQuizz(resultSet.getInt( "idQuestionnary" ));
-		parcours.setUserID(resultSet.getInt( "Associated_user" ));
+		parcours.setUserID(Integer.toUnsignedLong(resultSet.getInt( "Associated_user" )));
 		parcours.setScore(resultSet.getInt( "score" ));
 		parcours.setTime(resultSet.getInt( "time" ));
 	    return parcours;
@@ -44,8 +44,32 @@ public class ParcoursDaoImpl implements ParcoursDAO {
 
 	@Override
 	public void creer(Parcours parcours) throws DAOException {
-		// TODO Auto-generated method stub
-		
+    	Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet valeursAutoGenerees = null;
+
+        try {
+            /* Récupération d'une connexion depuis la Factory */
+            connexion = (Connection) daoFactory.getConnection();
+            preparedStatement = initialisationRequetePreparee( connexion, SQL_INSERT, true, parcours.getId(), parcours.getUserID(), parcours.getIdQuizz(),parcours.getScore(),parcours.getTime() );
+            int statut = preparedStatement.executeUpdate();
+            /* Analyse du statut retourné par la requête d'insertion */   
+            if ( statut == 0 ) {
+                throw new DAOException( "Échec de la création du parcours, aucune ligne ajoutée dans la table." );
+            }
+            /* Récupération de l'id auto-généré par la requête d'insertion */
+            valeursAutoGenerees = preparedStatement.getGeneratedKeys();
+            if ( valeursAutoGenerees.next() ) {
+                /* Puis initialisation de la propriété id du bean Utilisateur avec sa valeur */
+                parcours.setId( (int) valeursAutoGenerees.getLong( 1 ) );
+            } else {
+                throw new DAOException( "Échec de la création du parcours en base, aucun ID auto-généré retourné." );
+            }
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        } finally {
+            fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
+        }		
 	}
 
 	@Override
@@ -116,6 +140,51 @@ public class ParcoursDaoImpl implements ParcoursDAO {
 
        String query = "select SQL_CALC_FOUND_ROWS * from Parcours where idQuestionnary ="+id_quizz+" limit "
                + offset + ", " + noOfRecords;
+      try {
+    	  connexion = (Connection) daoFactory.getConnection();
+           stmt = (Statement) connexion.createStatement();
+          ResultSet rs = stmt.executeQuery(query);
+          while (rs.next()) {
+	    	  parcours = map( rs );
+	          list.add(parcours);
+          }
+          rs.close();
+          rs = stmt.executeQuery("SELECT FOUND_ROWS()");
+          if(rs.next())
+              this.noOfRecords = rs.getInt(1);
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }finally
+      {
+          try {
+              if(stmt != null)
+                  stmt.close();
+              if(connexion != null)
+            	  connexion.close();
+              } catch (SQLException e) {
+              e.printStackTrace();
+          }
+      }
+ 	    
+ 	    
+ 	    return list;
+	}
+
+	@Override
+	public List<Parcours> viewAllParcours(Long idUser) {
+		Connection connexion = null;
+ 	    PreparedStatement preparedStatement = null;
+ 	    ResultSet resultSet = null;
+
+ 	   String SQL_SELECT_ALL = "SELECT SQL_CALC_FOUND_ROWS * from Parcours limit";
+ 	   List<Parcours> list = new ArrayList<Parcours>();
+       Parcours parcours = null; 
+
+       Statement stmt = null;
+       
+       System.out.println("Servlet Parcours");
+
+       String query = "select SQL_CALC_FOUND_ROWS * from Parcours where idQuestionnary ="+idUser;
       try {
     	  connexion = (Connection) daoFactory.getConnection();
            stmt = (Statement) connexion.createStatement();

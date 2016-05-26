@@ -7,14 +7,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
+
 /**
  * Servlet implementation class first_page_admin
  */
-@WebServlet("/first_page_admin")
-public class first_page_admin extends HttpServlet {
+@WebServlet("/first_page_user")
+public class first_page_user extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    public static final String VUE              = "/WEB-INF/first_page_admin.jsp";
-    public static final String VUE2              = "/WEB-INF/gestion_users.jsp";
+    public static final String VUE              = "/WEB-INF/first_page_user.jsp";
 
 
     
@@ -23,7 +24,7 @@ public class first_page_admin extends HttpServlet {
      * 
      * @see HttpServlet#HttpServlet()
      */
-    public first_page_admin() {
+    public first_page_user() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -40,12 +41,5 @@ public class first_page_admin extends HttpServlet {
        // request.getSession().getServletContext().log("coucoucouc");
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-        this.getServletContext().getRequestDispatcher( VUE2 ).forward( request, response );
-	}
 
 }
