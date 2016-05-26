@@ -1,5 +1,8 @@
 package com.sr03.dao;
 
+import static com.sr03.dao.DAOUtilitaire.fermeturesSilencieuses;
+import static com.sr03.dao.DAOUtilitaire.initialisationRequetePreparee;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ public class QuizzDaoImpl implements QuizzDAO {
 
 	private DAOFactory daoFactory;
     private int noOfRecords;
+    private static final String SQL_MODIFY = "UPDATE Quizz SET intitule = ? WHERE idQuestionnary = ?  ";
 
 	@Override
 	public void creer(Quizz quizz) throws DAOException {
@@ -95,6 +99,25 @@ public class QuizzDaoImpl implements QuizzDAO {
 	    return quizz;
 	}
 
+	@Override
+	public void modifier(int quizzID, String intitule) {
+		Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet valeursAutoGenerees = null;
 
+        try {
+            connexion = (Connection) daoFactory.getConnection();
+            preparedStatement = initialisationRequetePreparee( connexion, SQL_MODIFY, false, intitule, quizzID);
+            int statut = preparedStatement.executeUpdate();
+            if ( statut == 0 ) {
+                throw new DAOException( "Échec de la création de la question, aucune ligne ajoutée dans la table." );
+            }
+
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        } finally {
+            fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
+        }		
+	}
     
 }

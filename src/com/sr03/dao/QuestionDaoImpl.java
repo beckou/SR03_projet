@@ -23,7 +23,9 @@ public class QuestionDaoImpl implements QuestionDAO {
     private int noOfRecords;
 
     private static final String SQL_INSERT = "INSERT INTO Questions (idQuestion,  idQuestionnary, intitule) VALUES (?, ?, ?)";
+    private static final String SQL_MODIFY = "UPDATE Questions SET intitule = ?, ordre = ? WHERE idQuestion = ?  ";
 
+    
     @Override
 
 	public List<Question> viewAllQuestion(int offset, int noOfRecords, int idQuizz) {
@@ -121,10 +123,32 @@ public class QuestionDaoImpl implements QuestionDAO {
     	
 		
 	}
+	@Override
+	public void modifier(int questionID, String intitule, int ordre) {
+		System.out.println("entree dans modifier");
+		Connection connexion = null;
+        PreparedStatement preparedStatement = null;
+        ResultSet valeursAutoGenerees = null;
 
+        try {
+            connexion = (Connection) daoFactory.getConnection();
+            preparedStatement = initialisationRequetePreparee( connexion, SQL_MODIFY, false, intitule, ordre , questionID);
+            int statut = preparedStatement.executeUpdate();
+            if ( statut == 0 ) {
+                throw new DAOException( "Échec de la création de la question, aucune ligne ajoutée dans la table." );
+            }
+
+        } catch ( SQLException e ) {
+            throw new DAOException( e );
+        } finally {
+            fermeturesSilencieuses( valeursAutoGenerees, preparedStatement, connexion );
+        }
+	}
 	@Override
 	public Question trouver(String id) throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
 }

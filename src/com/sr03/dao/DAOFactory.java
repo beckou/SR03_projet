@@ -87,4 +87,7 @@ public class DAOFactory {
     public AnswerDAO getAnswerDao() {
         return new AnswerDaoImpl( this );
     }
+    public ParcoursDAO getParcoursDao(){
+    	return new ParcoursDaoImpl( this );
+    }
 }

@@ -7,30 +7,28 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<link type="text/css" rel="stylesheet" href="<c:url value="/inc/form.css"/>" />   
 
-<title> Gestion Questionnaire</title>
+<title> Gestion Parcours</title>
 </head>
 <body>
 <fieldset>
+ "GESTION DU PARCOURS DE L'USER ${userID}"
 
  <table border="1" cellpadding="5" cellspacing="5">
         <tr>
-            <th>Quizz ID</th>
+            <th>Parcours ID</th>
             <th>Quizz Name</th>
-            <th>Action</th>
-            <th>Parcours associés</th>
+            <th>score</th>
+            <th>time</th>
 
         </tr>
  
-        <c:forEach var="quizz" items="${quizzList}">
+        <c:forEach var="parcours" items="${parcoursList}">
             <tr>
-                <td>${quizz.id}</td>
-                <td>${quizz.intitule}</td>
-            	<td>        <form method="get" action="gestion_of_quizz">
-            	<button type="submit" name="quizzID" value="${quizz.id}">Modify Quizz</button></form>
-            	</td>
-            	<td><form method="get" action="gestion_parcoursQ">
-            	<button type="submit" name="quizzID" value="${quizz.id}">Voir Parcours</button></form>
-            	</td>
+                <td>${parcours.id}</td>
+                <td>${parcours.idQuizz}</td>
+            	<td>${parcours.score}</td>
+            	<td>${parcours.time}</td>
+            	
             </tr>
         </c:forEach>
     </table>
@@ -38,7 +36,7 @@
     
     <%--For displaying Previous link except for the 1st page --%>
     <c:if test="${currentPage != 1}">
-        <td><a href="gestion_quizz?page=${currentPage - 1}">Previous</a></td>
+        <td><a href="gestion_parcours?page=${currentPage - 1}">Previous</a></td>
     </c:if>
  
     <%--For displaying Page numbers. 
@@ -51,7 +49,7 @@
                         <td>${i}</td>
                     </c:when>
                     <c:otherwise>
-                        <td><a href="gestion_quizz?page=${i}">${i}</a></td>
+                        <td><a href="gestion_parcours?page=${i}">${i}</a></td>
                     </c:otherwise>
                 </c:choose>
             </c:forEach>
@@ -60,8 +58,20 @@
      
     <%--For displaying Next link --%>
     <c:if test="${currentPage lt noOfPages}">
-        <td><a href="gestion_quizz?page=${currentPage + 1}">Next</a></td>
+        <td><a href="gestion_parcours?page=${currentPage + 1}">Next</a></td>
     </c:if>
+    
+    
+    <fieldset>
+    
+    "Temps moyen est : ${tMoyen}"
+    </br>
+    "Score moyen est : ${sMoyen}"
+	<p><progress id="score" value="${sMoyen}" max="20"></progress></p>
+    
+    
+    
+    </fieldset>
 
 
 

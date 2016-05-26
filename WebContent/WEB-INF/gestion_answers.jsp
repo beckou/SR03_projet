@@ -66,7 +66,7 @@
                <form method="post" action="gestion_answers">
             <fieldset>
                 <legend>Changer la question</legend>
-                <p>Veuillez remplir les champs à changer pour la question ${quizzID}</p>
+                <p>Veuillez remplir les champs à changer pour la question ${questionID}</p>
 
                 <label for="intitule">Nouveau Nom :</label>
                 <input type="textarea" id="intitule" name="intitule" value="" />
@@ -75,7 +75,7 @@
                 <label for="ordre">Changer Ordre :</label>
                 <input type="text" id="ordre" name="ordre" value="" />
                 <br />
- 				<input type="hidden" name="idQuizz" value="${quizzID}">
+ 				<input type="hidden" name="idQuestion" value="${questionID}">
                 <input type="submit" value="Changer" class="sansLabel" />
                 <br />
             </fieldset>

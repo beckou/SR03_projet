@@ -13,6 +13,8 @@ public interface QuizzDAO {
 
 	List<Quizz> viewAllQuizz(int offset, int noOfRecords);
 	
+	void modifier(int quizzID, String intitule) throws DAOException;
+	
 	int getNoOfRecords();
 
 

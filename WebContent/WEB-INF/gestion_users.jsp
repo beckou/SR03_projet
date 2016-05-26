@@ -33,6 +33,8 @@
             <th>User State</th>
             <th>Action</th>
             <th>Action</th>
+            <th>Visualisation Parcours</th>
+            
         </tr>
  
         <c:forEach var="user" items="${userList}">
@@ -45,11 +47,15 @@
                 <td>${user.phone}</td>
                 <td>${user.dateInscription}</td>
                 <td>${user.state}</td>
+                
                 <td>   <form method="post" action="modify_user">
                 <button type="submit" value="${user.id}" id="id" name="id" class="sansLabel" >modifier</button>
                 </form></td>
                  <td><form method="post" action="delete_user">
                 <button type="submit" value="${user.id}" id="id" name="id" class="sansLabel">supprimer</button>
+                </form></td>
+                       <td><form method="get" action="gestion_parcours">
+                <button type="submit" value="${user.id}" id="userId" name="userId" class="sansLabel">visualiserP</button>
                 </form></td>
                 
                 

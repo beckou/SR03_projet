@@ -5,21 +5,19 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.sr03.beans.Question;
+import com.sr03.beans.Quizz;
 import com.sr03.beans.User;
-import com.sr03.dao.QuestionDAO;
+import com.sr03.dao.QuizzDAO;
 import com.sr03.dao.UtilisateurDao;
 
-public class NewQuestionForm {
+public class ModifyQuizzForm {
     private static final String CHAMP_INTITULE= "intitule";
     private static final String CHAMP_IDQUIZZ  = "idQuizz";
-    private static final String CHAMP_IDQUESTION  = "idQuestion";
-    private static final String CHAMP_ORDRE  = "ordre";
 
-    private QuestionDAO   questionDao;
+    private QuizzDAO   quizzDao;
 
-    public NewQuestionForm( QuestionDAO questionDao ) {
-        this.questionDao = questionDao;
+    public ModifyQuizzForm( QuizzDAO quizzDao ) {
+        this.quizzDao = quizzDao;
     }
     
 
@@ -33,42 +31,38 @@ public class NewQuestionForm {
     public String getResultat() {
         return resultat;
     }
-    public void Modifyquestion( HttpServletRequest request ) {
-    	System.out.println("entreedansmodifyquestion");
+
+    public void Modifyquizz( HttpServletRequest request ) {
         String intitule = getValeurChamp( request, CHAMP_INTITULE );
-        int questionID = Integer.parseInt(getValeurChamp( request, CHAMP_IDQUESTION ));
-        int ordre = Integer.parseInt(getValeurChamp1( request, CHAMP_ORDRE));
-    	System.out.println("apres");
+        int quizzID = Integer.parseInt(getValeurChamp( request, CHAMP_IDQUIZZ ));
 
         
+        
+        
         if ( erreurs.isEmpty() ) {
-        	questionDao.modifier(questionID,intitule,ordre);
+        	quizzDao.modifier(quizzID,intitule);
             resultat = "Succès de la création du client.";
         } else {
             resultat = "Échec de la création du client.";
         }
 
     }
-    
-    public Question creerQuestion( HttpServletRequest request ) {
+    public Quizz creerquizz( HttpServletRequest request ) {
         String intitule = getValeurChamp( request, CHAMP_INTITULE );
-        int quizzID = Integer.parseInt(getValeurChamp( request, CHAMP_IDQUIZZ ));
 
-        Question question = new Question();
-        question.setId(null);
-        question.setIdQuizz(quizzID);
-        question.setIntitule(intitule);
+        Quizz quizz = new Quizz();
+        quizz.setIntitule(intitule);
         
         
         
         if ( erreurs.isEmpty() ) {
-        	questionDao.creer(question);
+        	//quizzDao.creer(quizzDao);
             resultat = "Succès de la création du client.";
         } else {
             resultat = "Échec de la création du client.";
         }
 
-        return question;
+        return quizz;
     }
     /*
      * Ajoute un message correspondant au champ spécifié à la map des erreurs.
@@ -89,12 +83,5 @@ public class NewQuestionForm {
             return valeur;
         }
     }
-    private static String getValeurChamp1( HttpServletRequest request, String nomChamp ) {
-        String valeur = request.getParameter( nomChamp );
-        if ( valeur == null ) {
-            return null;
-        } else {
-            return valeur;
-        }
-    }
+    
 }

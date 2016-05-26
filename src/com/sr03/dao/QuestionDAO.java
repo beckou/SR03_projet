@@ -15,6 +15,8 @@ public interface QuestionDAO {
 	List<Question> viewAllQuestion(int offset, int noOfRecords, int id_quizz);
 	
 	int getNoOfRecords();
+	
+	public void modifier(int questionID, String intitule, int ordre);
 
 
 }

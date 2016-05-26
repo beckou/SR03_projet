@@ -15,6 +15,8 @@ import com.sr03.beans.Quizz;
 import com.sr03.dao.DAOFactory;
 import com.sr03.dao.QuestionDAO;
 import com.sr03.dao.QuizzDAO;
+import com.sr03.forms.ModifyQuizzForm;
+import com.sr03.forms.NewQuestionForm;
 
 
 @WebServlet("/gestion_of_quizz")
@@ -22,14 +24,19 @@ public class gestion_of_quizz extends HttpServlet{
 
 	private static final long serialVersionUID = 1L;
     public static final String VUE              = "/WEB-INF/gestion_of_quizz.jsp";
-   
+	public static final String ATT_QUIZZ = "form";
+	public static final String VUE_SUCCES = "/WEB-INF/gestion_of_quizz.jsp";
+	public static final String VUE_FORM = "/WEB-INF/gestion_of_quizz.jsp";
    public static final String CONF_DAO_FACTORY = "daofactory";
     private int idQuizz;
     private QuestionDAO     questionDAO;
+    private QuizzDAO     quizzDAO;
 
     public void init() throws ServletException {
         /* Récupération d'une instance de notre DAO Utilisateur */
         this.questionDAO = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getQuestionDao();
+        this.quizzDAO = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getQuizzDao();
+
     }
 	
     public gestion_of_quizz() {
@@ -69,5 +76,27 @@ public class gestion_of_quizz extends HttpServlet{
         view.forward(request, response);
 	}
     
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		ModifyQuizzForm form = new ModifyQuizzForm(quizzDAO);
 
+		/* Traitement de la requête et récupération du bean en résultant */
+		form.Modifyquizz(request);
+
+		/* Ajout du bean et de l'objet métier à l'objet requête */
+		request.setAttribute(ATT_QUIZZ, form);
+
+		if (form.getErreurs().isEmpty()) {
+			/* Si aucune erreur, alors affichage de la fiche récapitulative */
+
+			request.getSession().getServletContext().log("La modif s'est bien déroulée");
+
+			this.getServletContext().getRequestDispatcher(VUE_SUCCES).forward(request, response);
+		} else {
+			/* Sinon, ré-affichage du formulaire de création avec les erreurs */
+			this.getServletContext().getRequestDispatcher(VUE_FORM).forward(request, response);
+		}
+	}
+    
+    
 }
