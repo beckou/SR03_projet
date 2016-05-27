@@ -17,5 +17,6 @@ public interface AnswerDAO {
 	
 	int getNoOfRecords();
 
+	void modify (int idAnswer);
 
 }

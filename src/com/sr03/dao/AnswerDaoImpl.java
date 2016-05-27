@@ -125,4 +125,10 @@ public class AnswerDaoImpl implements AnswerDAO {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public void modify(int idAnswer) {
+		// TODO Auto-generated method stub
+		
+	}
 }

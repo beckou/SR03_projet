@@ -18,5 +18,7 @@ public interface QuestionDAO {
 	
 	public void modifier(int questionID, String intitule, int ordre);
 
+	List<Question> viewAllQuestion(int parseInt);
+
 
 }

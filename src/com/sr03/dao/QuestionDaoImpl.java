@@ -33,7 +33,7 @@ public class QuestionDaoImpl implements QuestionDAO {
  	    PreparedStatement preparedStatement = null;
  	    ResultSet resultSet = null;
 
- 	   String SQL_SELECT_ALL = "SELECT SQL_CALC_FOUND_ROWS * from Questions limit" + offset + ", " + noOfRecords;
+ 	   String SQL_SELECT_ALL = "SELECT SQL_CALC_FOUND_ROWS * from Questions ORDER BY ordre ASC limit" + offset + ", " + noOfRecords;
  	   List<Question> list = new ArrayList<Question>();
        Question question = null; 
 
@@ -42,7 +42,7 @@ public class QuestionDaoImpl implements QuestionDAO {
        System.out.println("Servlet Question");
 
  	 
-       String query = "select SQL_CALC_FOUND_ROWS * from Questions where idQuestionnary ="+idQuizz+" limit "
+       String query = "select SQL_CALC_FOUND_ROWS * from Questions where idQuestionnary ="+idQuizz+" ORDER BY ordre ASC limit "
                + offset + ", " + noOfRecords;
       try {
     	  connexion = (Connection) daoFactory.getConnection();
@@ -148,6 +148,55 @@ public class QuestionDaoImpl implements QuestionDAO {
 	public Question trouver(String id) throws DAOException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<Question> viewAllQuestion(int idQuizz) {
+	       System.out.println("Pouet Pouet");
+
+		Connection connexion = null;
+ 	    PreparedStatement preparedStatement = null;
+ 	    ResultSet resultSet = null;
+
+ 	   String SQL_SELECT_ALL = "SELECT SQL_CALC_FOUND_ROWS * from Questions";
+ 	   List<Question> list = new ArrayList<Question>();
+       Question question = null; 
+
+       Statement stmt = null;
+       
+       System.out.println("Servlet Question");
+
+ 	 
+       String query = "select SQL_CALC_FOUND_ROWS * from Questions where idQuestionnary ="+idQuizz;
+      try {
+    	  connexion = (Connection) daoFactory.getConnection();
+           stmt = (Statement) connexion.createStatement();
+          ResultSet rs = stmt.executeQuery(query);
+          while (rs.next()) {
+	    	  question = map( rs );
+	          list.add(question);
+          }
+          rs.close();
+           
+          rs = stmt.executeQuery("SELECT FOUND_ROWS()");
+          if(rs.next())
+              this.noOfRecords = rs.getInt(1);
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }finally
+      {
+          try {
+              if(stmt != null)
+                  stmt.close();
+              if(connexion != null)
+            	  connexion.close();
+              } catch (SQLException e) {
+              e.printStackTrace();
+          }
+      }
+ 	    
+ 	    
+ 	    return list;
 	}
 
 

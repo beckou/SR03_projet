@@ -1,6 +1,7 @@
 package com.sr03.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -10,13 +11,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.sr03.beans.CoupleReponseParcours;
 import com.sr03.beans.Parcours;
 import com.sr03.beans.Question;
 import com.sr03.beans.Quizz;
 import com.sr03.beans.User;
 import com.sr03.dao.DAOFactory;
 import com.sr03.dao.ParcoursDAO;
+import com.sr03.dao.QuestionDAO;
 import com.sr03.dao.QuizzDAO;
+import com.sr03.dao.UtilisateurDao;
+import com.sr03.forms.CoupleAnswerForm;
 import com.sr03.forms.NewParcoursForm;
 import com.sr03.forms.NewQuestionForm;
 
@@ -30,6 +35,9 @@ public class view_quizz extends HttpServlet {
     private User utilisateur;
     private QuizzDAO quizzDAO;
     private ParcoursDAO parcoursDAO;
+    private UtilisateurDao userDAO;
+    private QuestionDAO questionDAO;
+
     public static final String CONF_DAO_FACTORY = "daofactory";
 
 	public static final String ATT_Parcours = "parcours";
@@ -51,6 +59,8 @@ public class view_quizz extends HttpServlet {
         /* Récupération d'une instance de notre DAO Utilisateur */
         this.quizzDAO = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getQuizzDao();
         this.parcoursDAO = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getParcoursDao();
+        this.userDAO = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getUtilisateurDao();
+        this.questionDAO = ( (DAOFactory) getServletContext().getAttribute( CONF_DAO_FACTORY ) ).getQuestionDao();
 
     }
     
@@ -66,10 +76,12 @@ public class view_quizz extends HttpServlet {
         if(request.getParameter("page") != null)
             page = Integer.parseInt(request.getParameter("page"));
         
-	        	utilisateur =  (User) request.getSession().getAttribute("utilisateur");
-	        	if(utilisateur != null)
-	        	idUser = utilisateur.getId();
-	        	else idUser = (long) 7;
+	        	utilisateur =  (User) request.getSession().getAttribute("sessionUtilisateur");
+	        	if(utilisateur != null){
+	        	idUser = userDAO.trouver(utilisateur.getMail()).getId();
+
+	        	System.out.println(utilisateur.getMail());
+	        	}
 	        List<Quizz> list = quizzDAO.viewAllQuizz();
 	        
 	        int noOfRecords = quizzDAO.getNoOfRecords();
@@ -77,14 +89,21 @@ public class view_quizz extends HttpServlet {
 
 	        List<Parcours> list1 = parcoursDAO.viewAllParcours(idUser);
 	        int i = 0;
-	        for(i = 0; i < list1.size(); i++){
-	        	
-	        	if(list.contains(list1.get(i).getIdQuizz()))
-	        	{
-	        		list.remove(list1.get(i).getIdQuizz());
+        	System.out.println(list1.size());
+
+	        while(i < list1.size()){
+	        	int j = 0;
+	        	while( j < list.size()){
+	        		
+	        		if(list.get(j).getId() == list1.get(i).getIdQuizz()){
+	        			
+	        			list.remove(j);
+	        		}
+	        			j+=1;
 	        	}
+	        	i+=1;
 	        }
-	        
+	        System.out.println(list);
 	        request.setAttribute("userID", idUser);
 	        request.setAttribute("quizzList", list);
 	        request.setAttribute("noOfPages", noOfPages);
@@ -98,16 +117,28 @@ public class view_quizz extends HttpServlet {
 		// TODO Auto-generated method stub
     
 		// TODO Auto-generated method stub
-		NewParcoursForm form = new NewParcoursForm(parcoursDAO);
-
-		/* Traitement de la requête et récupération du bean en résultant */
+		NewParcoursForm form = new NewParcoursForm(parcoursDAO,userDAO);
+		CoupleAnswerForm form1 = new CoupleAnswerForm(parcoursDAO,questionDAO);
+		int a = Integer.parseInt(request.getParameter("idQuizz"));
+		System.out.println(" int : : "+a);
+        List<Question> list = new ArrayList<Question>();
+        list.addAll(questionDAO.viewAllQuestion(a));
 		Parcours parcours = form.creerParcours(request);
-
+		List<CoupleReponseParcours> liste = new ArrayList<CoupleReponseParcours>();
+		int i = 0;
+		int score = 0;
+		while ( i < list.size()){
+			
+			CoupleReponseParcours coupe = form1.creerCouple(request, parcours.getId(), list.get(i).getId());
+			liste.add(coupe);
+			i+=1;
+		}
+		
 		/* Ajout du bean et de l'objet métier à l'objet requête */
 		request.setAttribute(ATT_Parcours, parcours);
 		request.setAttribute(ATT_FORM, form);
 
-		if (form.getErreurs().isEmpty()) {
+		if (form.getErreurs().isEmpty() && form1.getErreurs().isEmpty()) {
 			/* Si aucune erreur, alors affichage de la fiche récapitulative */
 
 			request.getSession().getServletContext().log("La création de la question s'est bien déroulée");

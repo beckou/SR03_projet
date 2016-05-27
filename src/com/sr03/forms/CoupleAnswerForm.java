@@ -1,31 +1,30 @@
 package com.sr03.forms;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.sr03.beans.CoupeQuestionReponse;
+import com.sr03.beans.CoupleReponseParcours;
 import com.sr03.beans.Parcours;
-import com.sr03.beans.Question;
 import com.sr03.beans.User;
+import com.sr03.dao.AnswerDAO;
 import com.sr03.dao.ParcoursDAO;
+import com.sr03.dao.QuestionDAO;
 import com.sr03.dao.ParcoursDAO;
 import com.sr03.dao.UtilisateurDao;
 
-public class NewParcoursForm {
-    private static final String CHAMP_INTITULE= "intitule";
-    private static final String CHAMP_IDQUESTION  = "idQuizz";
+public class CoupleAnswerForm {
     private User utilisateur;
-    private ParcoursDAO   parcoursDao;
-    private UtilisateurDao   userDao;
     private int quizzID;
     private Long idUser;
-    public NewParcoursForm( ParcoursDAO ParcoursDao, UtilisateurDao userDao ) {
-        this.parcoursDao = ParcoursDao;
-        this.userDao = userDao;
+    private ParcoursDAO parcoursDao;
+    private QuestionDAO questionDao;
 
+    public CoupleAnswerForm(ParcoursDAO parcoursDao, QuestionDAO questionDAO ) {
+    	this.questionDao = questionDAO;
+    	this.parcoursDao = parcoursDao;
     }
     
 
@@ -40,31 +39,21 @@ public class NewParcoursForm {
         return resultat;
     }
 
-    public Parcours creerParcours( HttpServletRequest request ) {
-        int quizzID = Integer.parseInt(getValeurChamp( request, CHAMP_IDQUESTION ));
-        List<Question> lList =null ;
-        
-    	utilisateur =  (User) request.getSession().getAttribute("sessionUtilisateur");
-    	if(utilisateur != null){
-    	idUser = userDao.trouver(utilisateur.getMail()).getId();
-    	System.out.println(utilisateur.getMail());
-    	}
-        Parcours parcours = new Parcours();
-        parcours.setId(null);
-        parcours.setIdQuizz(quizzID);
-        parcours.setScore(0);
-        parcours.setUserID(idUser);
-        parcours.setTime(0);
-        
-        
-        if ( erreurs.isEmpty() ) {
-        	parcoursDao.creer(parcours);
+    public CoupleReponseParcours creerCouple( HttpServletRequest request, int idParcours,int idAnswer ) {
+         		int idAnswer1 = getValeurChamp2( request, Integer.toUnsignedString(idAnswer));
+                CoupleReponseParcours couple = new CoupleReponseParcours();
+                System.out.println("valeur de ID ANSWER:"+idAnswer1+" et id quest"+idAnswer);
+                couple.setIdAnswer(idAnswer1);
+                couple.setIdParcours(idParcours);
+                
+            if ( erreurs.isEmpty() ) {
+        	parcoursDao.creerCouple(couple);
             resultat = "Succès de la création du client.";
         } else {
             resultat = "Échec de la création du client.";
         }
 
-        return parcours;
+        return couple;
     }
 
     /*
@@ -93,7 +82,10 @@ public class NewParcoursForm {
         } else {
             return 1;
         }
-
     }
-    
+    private static int getValeurChamp2( HttpServletRequest request, String nomChamp ) {
+        int valeur = Integer.parseInt(request.getParameter( nomChamp ));
+
+            return valeur;
+    }
 }

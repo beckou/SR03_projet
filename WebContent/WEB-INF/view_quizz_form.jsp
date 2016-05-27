@@ -20,10 +20,11 @@ Vos questionnaires possibles :
                 "Question : ${questions.question.intitule} "</br>
                  				<input type="hidden" name="idQuestion" value="${questions.question.id}">
                         <c:forEach var="answer" items="${questions.listeA}">
-  							<input type="radio" name="${questions.question.id}" value="${answer.status}"> ${answer.intitule}<br>
+  							<input type="radio" name="${questions.question.id}" value="${answer.id}"> ${answer.intitule}<br>
         			</c:forEach>
         </c:forEach>
         </br>
+                <input type="hidden" name="idQuizz" value="${idQuizz}">
             	<button type="submit" name="questID" value="">Send Results</button>
     </form>
 </fieldset>

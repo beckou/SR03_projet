@@ -36,7 +36,7 @@ public class view_quizz_form extends HttpServlet {
     private AnswerDAO answerDAO;
     private int idQuizz;
     public static final String CONF_DAO_FACTORY = "daofactory";
-
+    private int idUser;
     /**
      * 
      * @see HttpServlet#HttpServlet()
@@ -64,12 +64,13 @@ public class view_quizz_form extends HttpServlet {
         int recordsPerPage = 3;
         if(request.getParameter("page") != null)
             page = Integer.parseInt(request.getParameter("page"));
+        if(request.getParameter("userID")!= null)
+        	idUser = Integer.parseInt(request.getParameter("userID"));
         if(request.getParameter("quizzID")!= null){
         	idQuizz = Integer.parseInt(request.getParameter("quizzID"));
             System.out.println("Servlet Quizz id :" + idQuizz);
         }else{
-        	idQuizz = 3;
-            System.out.println("Servlet Quizz id :" + request.getParameter("quizzID"));
+            System.out.println("Servlet Quizz id :pasbon");
 
         }
         List<Question> list = questionDAO.viewAllQuestion((page-1)*recordsPerPage,
@@ -77,12 +78,14 @@ public class view_quizz_form extends HttpServlet {
         int i = 0;
         List<CoupeQuestionReponse> liste = new ArrayList<CoupeQuestionReponse>();
 
-        for(i = 0; i < list.size(); i++){
+        while(i < list.size()){
+
 
             List<Answer> list_temp = answerDAO.viewAllAnswer((page-1)*recordsPerPage,
                     recordsPerPage,list.get(i).getId());
             if (list_temp != null && list != null)
             liste.add(new CoupeQuestionReponse(list.get(i),list_temp));
+            i+=1;
         }
         
         
@@ -91,7 +94,8 @@ public class view_quizz_form extends HttpServlet {
         int noOfRecords = questionDAO.getNoOfRecords();
         int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
 
-	        request.setAttribute("quizzID", idQuizz);
+	        request.setAttribute("idQuizz", idQuizz);
+	        request.setAttribute("userID", idUser);
 	        request.setAttribute("questionList", liste);
 	        request.setAttribute("noOfPages", noOfPages);
 	        request.setAttribute("currentPage", page);

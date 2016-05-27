@@ -9,7 +9,7 @@
 <title>Page Stagiaire</title>
 </head>
 <body>
-Bienvenue dans votre page, Stagiare
+Bienvenue dans votre page, Stagiare ${userID} </br>
 
 Vos questionnaires possibles :
 
@@ -26,6 +26,7 @@ Vos questionnaires possibles :
             <tr>
                 <td>${quizz.intitule}</td>
             	<td>        <form method="get" action="view_quizz_form">
+            	                 				 <input type="hidden" name="userID" value="${userID}">
             	<button type="submit" name="quizzID" value="${quizz.id}">Réaliser le Quizz</button></form>
             	</td>
             </tr>

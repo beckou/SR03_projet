@@ -24,7 +24,7 @@ Vos questionnaires possibles :
                 <p class="${empty form.erreurs ? 'succes' : 'erreur'}">${form.resultat}</p>
                 
         </form>
-        <form method="get" action=>
+        <form method="get" action="view_parcours">
              
                 <br />
 
